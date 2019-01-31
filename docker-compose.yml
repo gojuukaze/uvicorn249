@@ -1,0 +1,25 @@
+version: "2.2"
+services:
+  uvicorn249:
+    image: uvicorn249
+    container_name: uvicorn249
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: uvicorn uvicorn249.asgi:application --host 0.0.0.0 --port 8000 --ws wsproto --debug
+    environment:
+      - uvicorn249_redis: redis
+    depends_on:
+      - redis
+    links:
+      - redis
+    ports:
+      - '8000:8000'
+    restart: always
+
+  redis:
+    image: redis:4-alpine
+    command: redis-server
+    restart: always
+
+
